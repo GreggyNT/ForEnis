@@ -9,14 +9,13 @@ public partial class AppbContext : DbContext
 {
     public AppbContext()
     {
-        
+         Database.EnsureDeleted();
+         Database.EnsureCreated();
     }
 
     public AppbContext(DbContextOptions<AppbContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
     }
 
     public virtual DbSet<TblAuthor> TblAuthors { get; set; }

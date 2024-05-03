@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cassa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c613eced8f3a0407da9f89a03813a5d4c23ecf4a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cassa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cassa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -69,7 +69,6 @@ namespace lab_1.Cassa.Services
                             break;
                     }
 
-
                 }
                 catch (OperationCanceledException)
                 {

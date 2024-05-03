@@ -27,7 +27,7 @@ namespace lab_1.Controllers
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<CommentResponseDto>> GetAuthors() => Ok(authorService.GetAllAsync());
+        public async Task<ActionResult<List<CommentResponseDto>>> GetAuthors() => Ok(await authorService.GetAllAsync());
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

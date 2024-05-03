@@ -160,3 +160,4 @@
 /home/gregster/RiderProjects/LC/2/Cassa/obj/Debug/net8.0/Cassa.pdb
 /home/gregster/RiderProjects/LC/2/Cassa/obj/Debug/net8.0/Cassa.genruntimeconfig.cache
 /home/gregster/RiderProjects/LC/2/Cassa/obj/Debug/net8.0/ref/Cassa.dll
+/home/gregster/RiderProjects/LC/2/Cassa/obj/Debug/net8.0/Cassa.sourcelink.json

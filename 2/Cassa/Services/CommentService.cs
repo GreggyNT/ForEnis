@@ -22,7 +22,7 @@ public class CommentService : IBaseService<CommentRequestDto, CommentResponseDto
 
     public CommentService()
     {
-        _context = Cluster.Builder().AddContactPoint("localhost").WithPort(55001).Build().Connect("distcomp");
+        _context = Cluster.Builder().WithDefaultKeyspace("distcomp").AddContactPoint("localhost").WithPort(9042).Build().ConnectAndCreateDefaultKeyspaceIfNotExists();
         _context.Execute(
             "CREATE  TABLE if not exists tbl_comments (country text,storyId  bigint,id bigint, content text, primary key ((country), id));");
         _request = new();

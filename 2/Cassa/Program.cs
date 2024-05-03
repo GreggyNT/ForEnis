@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IBaseService<CommentRequestDto, CommentResponseDto>, CommentService>()
-    .AddTransient<IValidator<CommentRequestDto>, CommentValidator>().AddSingleton<IHostedService,ConsumerService>();
+    .AddTransient<IValidator<CommentRequestDto>, CommentValidator>().AddTransient<IHostedService,ConsumerService>();
 MappingConfiguration.Global.Define(new Map<TblComment>().TableName("tbl_comments").ClusteringKey(u=>u.Country)
     .PartitionKey(u => u.Id,u=>u.Country).Column(u=>u.Content,cm=>cm.WithName("content")).Column(u=>u.StoryId,cm=>cm.WithName("storyId")));
 var app = builder.Build();
