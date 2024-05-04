@@ -26,15 +26,15 @@ namespace lab_1.Cassa.Services
             _commentService = commentService;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            return Task.Run(() => StartConsumerLoop(stoppingToken), stoppingToken);
+        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+        { 
+            await Task.Run(() => StartConsumerLoop(stoppingToken), stoppingToken);
         }
 
-        private TblComment StartConsumerLoop(CancellationToken cancellationToken)
+        private async Task<TblComment> StartConsumerLoop(CancellationToken cancellationToken)
         {
             TblComment? res = null;
-            List<TblComment> resLit = new List<TblComment?>();
+            List<TblComment?> resLit = new List<TblComment?>();
             int id = 0;
             consumer.Subscribe(topic);
             while (!cancellationToken.IsCancellationRequested)
@@ -51,21 +51,21 @@ namespace lab_1.Cassa.Services
                             break;
                         case 1:
                             id = JsonConvert.DeserializeObject<int>(cr.Message.Value);
-                            _commentService.SendOrderRequest("outTopic",
+                            await _commentService.SendOrderRequest("outTopic",
                                 JsonConvert.SerializeObject(_commentService.Read(id)));
                             break;
                         case 2:
                             id = JsonConvert.DeserializeObject<int>(cr.Message.Value);
-                            _commentService.SendOrderRequest("outTopic",
+                            await _commentService.SendOrderRequest("outTopic",
                                 JsonConvert.SerializeObject(_commentService.Delete(id)));
                             break;
                         case 3:
                             res = JsonConvert.DeserializeObject<TblComment>(cr.Message.Value);
                             _commentService.UpdateComment(res);
-                            _commentService.SendOrderRequest("outTopic", JsonConvert.SerializeObject(_commentService.Read(res.Id)));
+                            await _commentService.SendOrderRequest("outTopic", JsonConvert.SerializeObject(_commentService.Read(res.Id)));
                             break;
                         case 4:
-                            _commentService.SendOrderRequest("outTopic", JsonConvert.SerializeObject(_commentService.GetAll()));
+                            await _commentService.SendOrderRequest("outTopic", JsonConvert.SerializeObject(_commentService.GetAll()));
                             break;
                     }
 

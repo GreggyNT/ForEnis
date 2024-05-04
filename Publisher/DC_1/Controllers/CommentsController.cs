@@ -46,16 +46,19 @@ namespace lab_1.Controllers
         [HttpDelete("{id}")]
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult DeleteAuthor(long id)
+        public async  Task<ActionResult> DeleteAuthor(long id)
         {
-           return authorService.DeleteAsync(id).IsCompleted?NoContent():NotFound(); 
+            var res = await authorService.DeleteAsync(id);
+           return res?NoContent():NotFound(); 
         }
 
         [HttpPut]
-        public ActionResult<CommentResponseDto> UpdateAuthor([FromBody] CommentRequestDto dto)
-        {
-
-            return authorService.UpdateAsync(dto) == null ? NotFound(dto) : Ok(dto);
+        public async  Task<ActionResult<CommentResponseDto>> UpdateAuthor([FromBody] CommentRequestDto dto)
+        { 
+            await authorService.UpdateAsync(dto);
+            var res = JsonConvert.SerializeObject(await authorService.ReadAsync(dto.Id));
+            await _redis.SetStringAsync($"markers/{dto.Id}", res);
+            return  String.IsNullOrEmpty(res) ? NotFound(dto) : Ok(dto);
         }
 
         [HttpGet("{id}")]

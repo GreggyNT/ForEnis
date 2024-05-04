@@ -134,45 +134,48 @@ public class CommentService : IAsyncService<CommentRequestDto, CommentResponseDt
             BootstrapServers = "localhost:9092",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
-        var consumer = new ConsumerBuilder<Null, string>(conf).Build();
-        
-        consumer.Subscribe("outTopic");
-        
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
-        var cancel = new CancellationToken();
-        while (sw.ElapsedMilliseconds < 1100)
+        using (var consumer = new ConsumerBuilder<Null, string>(conf).Build())
         {
-            try
-            {
-                var cr = consumer.Consume(cancel);
+            ;
 
-                return cr.Message.Value;
+            consumer.Subscribe("outTopic");
 
-            }
-            catch (OperationCanceledException)
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var cancel = new CancellationToken();
+            while (sw.ElapsedMilliseconds < 110)
             {
-                break;
-            }
-            catch (ConsumeException e)
-            {
-                // Consumer errors should generally be ignored (or logged) unless fatal.
-                Console.WriteLine($"Consume error: {e.Error.Reason}");
-
-                if (e.Error.IsFatal)
+                try
                 {
-                    // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
+                    var cr = consumer.Consume(cancel);
+
+                    return cr.Message.Value;
+
+                }
+                catch (OperationCanceledException)
+                {
                     break;
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Unexpected error: {e}");
-                break;
-            }
-           
-        }
+                catch (ConsumeException e)
+                {
+                    // Consumer errors should generally be ignored (or logged) unless fatal.
+                    Console.WriteLine($"Consume error: {e.Error.Reason}");
 
+                    if (e.Error.IsFatal)
+                    {
+                        // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Unexpected error: {e}");
+                    break;
+                }
+
+            }
+            consumer.Close();
+        }
         return String.Empty;
     }
 }

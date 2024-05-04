@@ -9,13 +9,13 @@ public partial class AppbContext : DbContext
 {
     public AppbContext()
     {
-         Database.EnsureDeleted();
-         Database.EnsureCreated();
+         
     }
 
     public AppbContext(DbContextOptions<AppbContext> options)
         : base(options)
     {
+        Database.EnsureCreated();
     }
 
     public virtual DbSet<TblAuthor> TblAuthors { get; set; }
@@ -28,6 +28,7 @@ public partial class AppbContext : DbContext
 
     public virtual DbSet<TblStoryMarker> TblStoryMarkers { get; set; }
     
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblAuthor>(entity =>
